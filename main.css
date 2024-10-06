@@ -18,5 +18,10 @@
     margin-left: 2.6vh;
     padding: 1vh 2.3vh;
     cursor: pointer;
-
+}
+.parent{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
