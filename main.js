@@ -1,7 +1,3 @@
-function notneeded(){
-    const tooltip = document.getElementById('Floating-Window');
-    tooltip.remove();
-}
 (function(){
     const url = window.location.href;
     if(url.includes('youtube.com')){
@@ -15,7 +11,8 @@ function notneeded(){
         }
         content();
     }else{
-        notneeded();
+        const tooltip = document.getElementById('Floating-Window');
+        if(tooltip) tooltip.remove();
     }
 })();
 
