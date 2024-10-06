@@ -5,6 +5,7 @@ function notneeded(){
 window.onload = function(){
     const url = window.location.href;
     if(url.includes('youtube.com')){
+        console.log(url)
         function content(){
             document.getElementById('Content').innerHTML = 'Working'
         }
@@ -18,3 +19,4 @@ window.onload = function(){
         notneeded();
     }
 }
+
