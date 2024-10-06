@@ -11,3 +11,12 @@
     font-size: 3/5vh;
     z-index: 10000000;
 }
+.closing{
+    border: none;
+    background-color: red;
+    color: white;
+    margin-left: 2.6vh;
+    padding: 1vh 2.3vh;
+    cursor: pointer;
+
+}
