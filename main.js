@@ -2,10 +2,9 @@ function notneeded(){
     const tooltip = document.getElementById('Floating-Window');
     tooltip.remove();
 }
-window.onload = function(){
+(function(){
     const url = window.location.href;
     if(url.includes('youtube.com')){
-        console.log(url)
         function content(){
             document.getElementById('Content').innerHTML = 'Working'
         }
@@ -18,5 +17,5 @@ window.onload = function(){
     }else{
         notneeded();
     }
-}
+})();
 
