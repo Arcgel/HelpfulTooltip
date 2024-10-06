@@ -1,0 +1,13 @@
+.Floating-window{
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    bottom: 0;
+    left: 0;
+    background-color: #323232;
+    color: white;
+    padding: 4vh;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 3/5vh;
+    z-index: 10000000;
+}
