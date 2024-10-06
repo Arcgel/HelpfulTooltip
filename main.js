@@ -1,21 +1,51 @@
-function notneeded(){
+
+function notneeded() {
     const tooltip = document.getElementById('Floating-Window');
     tooltip.remove();
 }
-window.onload = function(){
+
+window.onload = function() {
     const url = window.location.href;
-    if(url.includes('youtube.com')){
-        function content(){
-            document.getElementById('Content').innerHTML = 'Working'
-        }
-        content();
-    }else if(url.includes('http://127.0.0.1:5500/main.html')){
-        function content(){
-            document.getElementById('Content').innerHTML = 'TestField'
-        }
-        content();
-    }else{
+
+    if (url.includes('youtube.com')) {
+        document.getElementById('Content').innerHTML = 'Hey hi YouTube!';
+    } else if (url.includes('http://127.0.0.1:5500/main.html')) {
+        document.getElementById('Content').innerHTML = 'TestField';
+    } else {
         notneeded();
     }
+
+    let timeLeft = 10;
+    const countdown = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            notneeded(); // Remove the popup after countdown ends
+        } else {
+            timeLeft--;
+        }
+    }, 1000);
+};
+// Function to create the popup
+function createPopup() {
+    const existingPopup = document.getElementById('Floating-Window');
+    if (existingPopup) return;
+
+    // Create popup div
+    const popup = document.createElement('div');
+    popup.id = 'Floating-Window';
+    popup.className = 'Floating-window';
+
+    const contentDiv = document.createElement('div');
+    contentDiv.id = 'Content'; // This is where the message will be displayed
+
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'Close';
+    closeButton.className = 'closing';
+    closeButton.onclick = notneeded;
+
+    popup.appendChild(contentDiv);
+    popup.appendChild(closeButton);
+    document.body.appendChild(popup);
 }
 
+createPopup();
