@@ -35,6 +35,10 @@ function createPopup() {
     popup.id = 'Floating-Window';
     popup.className = 'Floating-window';
 
+    const parentDiv = document.createElement('div');
+    parentDiv.id = 'parent';//wrapper for the content and div
+    parentDiv.className = 'parent'
+
     const contentDiv = document.createElement('div');
     contentDiv.id = 'Content'; // This is where the message will be displayed
 
@@ -43,8 +47,9 @@ function createPopup() {
     closeButton.className = 'closing';
     closeButton.onclick = notneeded;
 
-    popup.appendChild(contentDiv);
-    popup.appendChild(closeButton);
+    parentDiv.appendChild(contentDiv);
+    parentDiv.appendChild(closeButton);
+    popup.appendChild(parentDiv);
     document.body.appendChild(popup);
 }
 
