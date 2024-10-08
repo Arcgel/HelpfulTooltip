@@ -59,7 +59,7 @@ function popuplogic() {
         timer();
     } else if (url.includes('javascript')) {
         createPopup();
-        document.getElementById('Content').innerHTML = 'HacktoberFest';
+        document.getElementById('Content').innerHTML = 'Hacktober';
         timer();
     } else {
         return;
