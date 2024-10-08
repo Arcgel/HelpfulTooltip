@@ -10,6 +10,9 @@
     font-family: 'Courier New', Courier, monospace;
     font-size: 3.5vh;
     z-index: 10000000;
+    margin: auto;
+    width: 90%;
+    margin-bottom: 2vh;
 }
 .closing{
     border: none;
