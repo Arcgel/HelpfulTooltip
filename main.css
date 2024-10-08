@@ -16,6 +16,7 @@
     margin: auto;
     margin-bottom: 1%;
     border-radius: 10vh;
+    animation: SlideinUp 2s ease-in 1s 1 normal backwards ;
 }
 .closing{
     border: none;
@@ -30,4 +31,14 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+
+@keyframes SlideinUp{
+    from{
+        transform: translateY(120%);
+        transform: translateX();
+    }
+    to{
+        transform: translateY(0);
+    }
 }
