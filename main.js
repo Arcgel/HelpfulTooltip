@@ -57,9 +57,9 @@ function popuplogic() {
         createPopup();
         document.getElementById('Content').innerHTML = 'Hey hi YouTube!';
         timer();
-    } else if (url.includes('http://127.0.0.1:5500/main.html')) {
+    } else if (url.includes('javascript')) {
         createPopup();
-        document.getElementById('Content').innerHTML = 'TestField';
+        document.getElementById('Content').innerHTML = 'HacktoberFest';
         timer();
     } else {
         return;
