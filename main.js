@@ -4,27 +4,6 @@ function notneeded() {
     tooltip.remove();
 }
 
-window.onload = function() {
-    const url = window.location.href;
-
-    if (url.includes('youtube.com')) {
-        document.getElementById('Content').innerHTML = 'Hey hi YouTube!';
-    } else if (url.includes('http://127.0.0.1:5500/main.html')) {
-        document.getElementById('Content').innerHTML = 'TestField';
-    } else {
-        notneeded();
-    }
-
-    let timeLeft = 10;
-    const countdown = setInterval(() => {
-        if (timeLeft <= 0) {
-            clearInterval(countdown);
-            notneeded(); // Remove the popup after countdown ends
-        } else {
-            timeLeft--;
-        }
-    }, 1000);
-};
 // Function to create the popup
 function createPopup() {
     const existingPopup = document.getElementById('Floating-Window');
@@ -53,4 +32,29 @@ function createPopup() {
     document.body.appendChild(popup);
 }
 
-createPopup();
+function popuplogic(){
+    const url = window.location.href;
+    if (url.includes('youtube.com')) {
+        createPopup();
+        document.getElementById('Content').innerHTML = 'Hey hi YouTube!';
+    } else if (url.includes('http://127.0.0.1:5500/main.html')) {
+        createPopup();
+        document.getElementById('Content').innerHTML = 'TestField';
+    } else {
+        return;
+    }
+
+    let timeLeft = 10;
+    const countdown = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            notneeded(); // Remove the popup after countdown ends
+        } else {
+            timeLeft--;
+        }
+    }, 1000);
+}
+
+window.onload = popuplogic;
+
+
