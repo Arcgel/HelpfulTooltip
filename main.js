@@ -34,6 +34,25 @@ const websiteMessages = {
     "default": "Welcome to the Internet, where every click is a new adventure!"
 };
 
+const untrustedWebsites = {
+    "vivobarefootshoesza.co.za": "Beware! This site might be as fragile as its barefoot promises.",
+    "vivobarefootshoes.co.za": "Tread carefully, your wallet might not stay as light as your feet.",
+    "vivobarefootlondon.com": "Is it really from London, or just another imposter? Proceed with caution!",
+    "vivoshoeuk.com": "UK shoes? Or just a fancy URL? Don't let your guard down!",
+    "vivobarefotsale.com": "Big sale or big scam? Watch your step on this site!",
+    "vivobarafootshoesca.com": "Canada calling... or is it? Make sure to double-check!",
+    "vivoskonorge.com": "Norway might be far, but so could be your chances of getting those shoes.",
+    "vivobarefootnorgeno.com": "Another Norway-based site? Make sure it’s legit before you step in.",
+    "vivobarefootsverige.com.se": "Sverige in the URL, but are the deals real? Time to investigate!",
+    "vivobarefootromaniaro.com": "Romania or not, this site looks like it needs a second glance.",
+    "vivobarefootpt.com": "Portugal promises but who knows if it delivers. Be cautious.",
+    "vivobarefootdanmark.top": "Top deals from Denmark? Or top-notch phishing? You decide.",
+    "groundiesblackfriday.com": "Black Friday forever? Feels too good to be true. Keep an eye out!",
+    "groundiesaustraliasale.com": "Australia's sale or just another mirage? Stay on your toes.",
+    "groundiesbarefootaustralia.com": "Barefoot in Australia or walking into a trap? Tread wisely.",
+    "default": "Welcome to a suspicious site. Be extra careful, and double-check before proceeding!"
+};
+
 function notneeded() {
     const tooltip = document.getElementById('Floating-Window');
     if (tooltip) {
@@ -50,12 +69,12 @@ function createPopup(message) {
     popup.className = 'Floating-window';
 
     const parentDiv = document.createElement('div');
-    parentDiv.id = 'parent'; 
+    parentDiv.id = 'parent';
     parentDiv.className = 'parent';
 
     const contentDiv = document.createElement('div');
-    contentDiv.id = 'Content'; 
-    contentDiv.innerHTML = message; 
+    contentDiv.id = 'Content';
+    contentDiv.innerHTML = message;
 
     const closeButton = document.createElement('button');
     closeButton.textContent = 'Close';
@@ -70,7 +89,7 @@ function createPopup(message) {
 
 function showMessageForWebsite() {
     const url = window.location.href;
-    let message = websiteMessages["default"]; 
+    let message = websiteMessages["default"];
 
     for (let site in websiteMessages) {
         if (url.includes(site)) {
@@ -82,14 +101,14 @@ function showMessageForWebsite() {
     createPopup(message);
 }
 
-window.onload = function() {
+window.onload = function () {
     showMessageForWebsite();
 
     let timeLeft = 10;
     const countdown = setInterval(() => {
         if (timeLeft <= 0) {
             clearInterval(countdown);
-            notneeded(); 
+            notneeded();
         } else {
             timeLeft--;
         }
