@@ -35,21 +35,9 @@ const websiteMessages = {
 };
 
 const untrustedWebsites = {
-    "vivobarefootshoesza.co.za": "Beware! This site might be as fragile as its barefoot promises.",
-    "vivobarefootshoes.co.za": "Tread carefully, your wallet might not stay as light as your feet.",
-    "vivobarefootlondon.com": "Is it really from London, or just another imposter? Proceed with caution!",
-    "vivoshoeuk.com": "UK shoes? Or just a fancy URL? Don't let your guard down!",
-    "vivobarefotsale.com": "Big sale or big scam? Watch your step on this site!",
-    "vivobarafootshoesca.com": "Canada calling... or is it? Make sure to double-check!",
-    "vivoskonorge.com": "Norway might be far, but so could be your chances of getting those shoes.",
-    "vivobarefootnorgeno.com": "Another Norway-based site? Make sure it’s legit before you step in.",
-    "vivobarefootsverige.com.se": "Sverige in the URL, but are the deals real? Time to investigate!",
-    "vivobarefootromaniaro.com": "Romania or not, this site looks like it needs a second glance.",
-    "vivobarefootpt.com": "Portugal promises but who knows if it delivers. Be cautious.",
-    "vivobarefootdanmark.top": "Top deals from Denmark? Or top-notch phishing? You decide.",
-    "groundiesblackfriday.com": "Black Friday forever? Feels too good to be true. Keep an eye out!",
-    "groundiesaustraliasale.com": "Australia's sale or just another mirage? Stay on your toes.",
-    "groundiesbarefootaustralia.com": "Barefoot in Australia or walking into a trap? Tread wisely."
+    "kissanime.com.ru": "Kissanime with a twist of Russia? Watch out for shady streams!",
+    "kissanime.ba": "Is this the Kissanime you know? Or just a knockoff from nowhere?",
+    "aniwave.com.es": "Spanish waves of anime or a sea of scams? Surf with caution!"
 };
 
 function notneeded() {
@@ -86,6 +74,27 @@ function createPopup(message) {
     document.body.appendChild(popup);
 }
 
+let valid = false;
+
+function showMessageForuntrustedWebsites() {
+
+    const url = window.location.href;
+    let message = null;
+
+    for (let site in untrustedWebsites) {
+        if (url.includes(site)) {
+            message = untrustedWebsites[site];
+            valid = true;  // Mark as valid if a match is found
+            break;
+        }
+    }
+
+    if (message) {
+        createPopup(message);  // Only create a popup if a message is found
+    }
+
+}
+
 function showMessageForWebsite() {
     const url = window.location.href;
     let message = websiteMessages["default"];
@@ -101,7 +110,11 @@ function showMessageForWebsite() {
 }
 
 window.onload = function () {
-    showMessageForWebsite();
+    showMessageForuntrustedWebsites(); // Check for untrusted websites
+
+    if (!valid) {  // If no untrusted site was matched, show the trusted website message
+        showMessageForWebsite();
+    }
 
     let timeLeft = 10;
     const countdown = setInterval(() => {
