@@ -49,8 +49,7 @@ const untrustedWebsites = {
     "vivobarefootdanmark.top": "Top deals from Denmark? Or top-notch phishing? You decide.",
     "groundiesblackfriday.com": "Black Friday forever? Feels too good to be true. Keep an eye out!",
     "groundiesaustraliasale.com": "Australia's sale or just another mirage? Stay on your toes.",
-    "groundiesbarefootaustralia.com": "Barefoot in Australia or walking into a trap? Tread wisely.",
-    "default": "Welcome to a suspicious site. Be extra careful, and double-check before proceeding!"
+    "groundiesbarefootaustralia.com": "Barefoot in Australia or walking into a trap? Tread wisely."
 };
 
 function notneeded() {
