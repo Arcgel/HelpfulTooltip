@@ -40,6 +40,26 @@ const untrustedWebsites = {
     "aniwave.com.es": "Spanish waves of anime or a sea of scams? Surf with caution!"
 };
 
+function timer() {
+    let timeLeft = 10;
+    const countdown = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            Delete_verification();
+        } else {
+            timeLeft--;
+        }
+    }, 1000);
+}
+
+function Delete_verification() {
+    if (document.getElementById('Floating-Window')) {
+        notneeded();
+    } else {
+        return;
+    }
+}
+
 function notneeded() {
     const tooltip = document.getElementById('Floating-Window');
     if (tooltip) {
@@ -74,9 +94,11 @@ function createPopup(message) {
     document.body.appendChild(popup);
 }
 
-let valid = false;
+
+
 
 function showMessageForuntrustedWebsites() {
+    let valid = false;
 
     const url = window.location.href;
     let message = null;
@@ -105,28 +127,21 @@ function showMessageForWebsite() {
             break;
         }
     }
-
     createPopup(message);
 }
 
-window.onload = function () {
+function verifymessage() {
+    let valid = false;
     showMessageForuntrustedWebsites(); // Check for untrusted websites
 
-    if (!valid) {  // If no untrusted site was matched, show the trusted website message
+    if (!valid) {
         showMessageForWebsite();
     }
     timer();
-
-};
-
-function timer(){
-    let timeLeft = 10;
-    const countdown = setInterval(() => {
-        if (timeLeft <= 0) {
-            clearInterval(countdown);
-            notneeded();
-        } else {
-            timeLeft--;
-        }
-    }, 1000);
 }
+
+window.onload = verifymessage();
+
+
+
+
