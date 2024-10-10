@@ -115,7 +115,11 @@ window.onload = function () {
     if (!valid) {  // If no untrusted site was matched, show the trusted website message
         showMessageForWebsite();
     }
+    timer();
 
+};
+
+function timer(){
     let timeLeft = 10;
     const countdown = setInterval(() => {
         if (timeLeft <= 0) {
@@ -125,4 +129,4 @@ window.onload = function () {
             timeLeft--;
         }
     }, 1000);
-};
+}
