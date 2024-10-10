@@ -10,6 +10,11 @@
     font-family: 'Courier New', Courier, monospace;
     font-size: 3.5vh;
     z-index: 10000000;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 1%;
+    border-radius: 10vh;
+    animation: SlideinUp 1s ease-in 1s 1 normal backwards ;
 }
 .closing{
     border: none;
@@ -24,4 +29,13 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+@keyframes SlideinUp{
+    from{
+        transform: translateY(120%);
+        transform: translateX();
+    }
+    to{
+        transform: translateY(0);
+    }
 }
