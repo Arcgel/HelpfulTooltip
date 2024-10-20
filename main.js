@@ -1,6 +1,9 @@
 
 const websiteMessages = {
-    "youtube.com": "Hey hi YouTube! Ready to lose track of time with 'just one more video'?",
+    'youtube.com': [
+        "Hey hi YouTube! Ready to lose track of time with 'just one more video'?",
+        "Hello Youtube"
+    ],
     "amazon.com": "Welcome to Amazon! Your bank account is shaking in fear.",
     "facebook.com": "Time to scroll through endless status updates and food pics on Facebook!",
     "twitter.com": "Welcome to Twitter! Hope you're ready for a tweetstorm.",
@@ -35,10 +38,17 @@ const websiteMessages = {
 };
 
 const untrustedWebsites = {
-    "kissanime.com.ru": "Kissanime with a twist of Russia? Watch out for shady streams!",
+    "kissanime.com.ru": [
+        "Kissanime with a twist of Russia? Watch out for shady streams!",
+        "Virus Infested Site"
+    ], 
     "kissanime.ba": "Is this the Kissanime you know? Or just a knockoff from nowhere?",
     "aniwave.com.es": "Spanish waves of anime or a sea of scams? Surf with caution!"
 };
+
+localStorage.setItem('websiteMessages',JSON.stringify(websiteMessages));
+localStorage.setItem('untrustedWebsites',JSON.stringify(untrustedWebsites));
+
 
 function timer() {
     let timeLeft = 10;
@@ -98,49 +108,52 @@ function createPopup(message) {
 
 
 function showMessageForuntrustedWebsites() {
-    let valid = false;
 
     const url = window.location.href;
-    let message = null;
+    let untrustedWebsites = JSON.parse(localStorage.getItem('untrustedWebsites')) 
+    let messagepop = null;
 
     for (let site in untrustedWebsites) {
         if (url.includes(site)) {
-            message = untrustedWebsites[site];
-            valid = true;  // Mark as valid if a match is found
+            messagepop = untrustedWebsites[site];
             break;
         }
     }
 
-    if (message) {
-        createPopup(message);  // Only create a popup if a message is found
+    if (messagepop) {
+        const randomMessage = messagepop[Math.floor(Math.random() * messagepop.length)];
+        createPopup(randomMessage);  // Only create a popup if a message is found
+        return true;
     }
+    return false;
 
 }
 
 function showMessageForWebsite() {
     const url = window.location.href;
-    let message = websiteMessages["default"];
+    let websiteMessages = JSON.parse(localStorage.getItem('websiteMessages'));
+    let messagepop = websiteMessages["default"];
 
     for (let site in websiteMessages) {
         if (url.includes(site)) {
-            message = websiteMessages[site];
+            messagepop = websiteMessages[site];
             break;
         }
     }
-    createPopup(message);
+    const randomMessage = messagepop[Math.floor(Math.random() * messagepop.length)];
+    createPopup(randomMessage);
 }
 
 function verifymessage() {
-    let valid = false;
-    showMessageForuntrustedWebsites(); // Check for untrusted websites
+    const isUntrusted = showMessageForuntrustedWebsites()
 
-    if (!valid) {
+    if (!isUntrusted) {
         showMessageForWebsite();
     }
     timer();
 }
 
-window.onload = verifymessage();
+window.onload = verifymessage;
 
 
 
