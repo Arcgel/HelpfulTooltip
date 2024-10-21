@@ -1,0 +1,41 @@
+body {
+    width: 300px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
+input {
+    padding: 10px 5px 10px 5px;
+    border-radius: 15px;
+}
+p {
+    font-size: 17px;
+    margin: 0;
+    margin-top: 20px;
+    margin-bottom: 3px;
+    margin-left: 5px;
+
+}
+.icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    padding: 5px;
+    border: none;
+    color: white;
+}
+div{
+   display: flex;
+   align-items: center; 
+}
+button{
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 5px 10px 5px 10px;
+}
+.buttonicon{
+    border: none;
+    background: transparent;
+    padding: 0;
+    
+}
