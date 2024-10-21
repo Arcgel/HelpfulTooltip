@@ -150,6 +150,7 @@ function verifymessage() {
     if (!isUntrusted) {
         showMessageForWebsite();
     }
+    
     timer();
 }
 
