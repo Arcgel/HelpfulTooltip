@@ -132,7 +132,6 @@ function showMessageForuntrustedWebsites() {
 function showMessageForWebsite() {
     const url = window.location.href;
     let websiteMessages = JSON.parse(localStorage.getItem('websiteMessages'));
-    let messagepop = websiteMessages["default"];
 
     for (let site in websiteMessages) {
         if (url.includes(site)) {
