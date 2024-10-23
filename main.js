@@ -1,55 +1,4 @@
 
-const websiteMessages = {
-    'youtube.com': [
-        "Hey hi YouTube! Ready to lose track of time with 'just one more video'?",
-        "Hello Youtube"
-    ],
-    "amazon.com": "Welcome to Amazon! Your bank account is shaking in fear.",
-    "facebook.com": "Time to scroll through endless status updates and food pics on Facebook!",
-    "twitter.com": "Welcome to Twitter! Hope you're ready for a tweetstorm.",
-    "reddit.com": "Reddit? Say goodbye to your productivity for the next few hours.",
-    "netflix.com": "Netflix: Where 'just one episode' turns into a season marathon.",
-    "github.com": "GitHub, where your code goes to meet bugs and endless commits.",
-    "wikipedia.org": "Ah, Wikipedia... Let's see how deep you can go into the rabbit hole.",
-    "linkedin.com": "Welcome to LinkedIn, where professionals connect and humble brag.",
-    "instagram.com": "Instagram, where reality is filtered and likes make the world go round.",
-    "google.com": "Google knows everything. Even the things you thought you forgot.",
-    "yahoo.com": "Yahoo! Still surviving... somehow.",
-    "bing.com": "Bing: Still trying.",
-    "chat.openai.com": "ChatGPT: Here to make you wonder if bots will take over the world.",
-    "stackoverflow.com": "Stack Overflow: Where you copy-paste your way to success.",
-    "github.com": "GitHub: Because coding in one go is too mainstream.",
-    "quora.com": "Quora: Where random strangers argue about everything.",
-    "tiktok.com": "TikTok: 'I'll just watch one'—the biggest lie you tell yourself.",
-    "pinterest.com": "Pinterest: Where your DIY dreams go to die.",
-    "whatsapp.com": "WhatsApp: Because texting is just too simple.",
-    "zoom.us": "Zoom: You're on mute again, aren't you?",
-    "slack.com": "Slack: Where productivity goes to chat.",
-    "discord.com": "Discord: The only thing more chaotic than the server is your sleep schedule.",
-    "apple.com": "Apple: Where everything costs an arm and a leg, but looks really cool.",
-    "microsoft.com": "Microsoft: Because sometimes things need 42 updates.",
-    "spotify.com": "Spotify: Curating your life's soundtrack, one ad at a time.",
-    "netlify.com": "Netlify: Deploying websites faster than you can debug them.",
-    "dropbox.com": "Dropbox: Where your files go to hide... somewhere in the cloud.",
-    "zoom.us": "Zoom: Where the mute button becomes the most powerful tool.",
-    "paypal.com": "PayPal: Conveniently draining your funds, one transaction at a time.",
-    "127.0.0.1:5500/main.html": "TestField - You're working locally, good luck debugging!",
-    "default": "Welcome to the Internet, where every click is a new adventure!"
-};
-
-const untrustedWebsites = {
-    "kissanime.com.ru": [
-        "Kissanime with a twist of Russia? Watch out for shady streams!",
-        "Virus Infested Site"
-    ], 
-    "kissanime.ba": "Is this the Kissanime you know? Or just a knockoff from nowhere?",
-    "aniwave.com.es": "Spanish waves of anime or a sea of scams? Surf with caution!"
-};
-
-localStorage.setItem('websiteMessages',JSON.stringify(websiteMessages));
-localStorage.setItem('untrustedWebsites',JSON.stringify(untrustedWebsites));
-
-
 function timer() {
     let timeLeft = 10;
     const countdown = setInterval(() => {
@@ -107,53 +56,33 @@ function createPopup(message) {
 
 
 
-function showMessageForuntrustedWebsites() {
+function verifyMessage() {
+    chrome.runtime.sendMessage({ action: 'getMessages' }, (response) => {
+        const storedMessages = JSON.parse(response.websiteMessages || '{}');
+        const url = window.location.href;
 
-    const url = window.location.href;
-    let untrustedWebsites = JSON.parse(localStorage.getItem('untrustedWebsites')) 
-    let messagepop = null;
+        let messagePop = storedMessages['default'];
 
-    for (let site in untrustedWebsites) {
-        if (url.includes(site)) {
-            messagepop = untrustedWebsites[site];
-            break;
+        for (let site in storedMessages) {
+            if (url.includes(site)) {
+                messagePop = storedMessages[site];
+                break;
+            }
         }
-    }
 
-    if (messagepop) {
-        const randomMessage = messagepop[Math.floor(Math.random() * messagepop.length)];
-        createPopup(randomMessage);  // Only create a popup if a message is found
-        return true;
-    }
-    return false;
-
-}
-
-function showMessageForWebsite() {
-    const url = window.location.href;
-    let websiteMessages = JSON.parse(localStorage.getItem('websiteMessages'));
-
-    for (let site in websiteMessages) {
-        if (url.includes(site)) {
-            messagepop = websiteMessages[site];
-            break;
+        if (messagePop) {
+            const randomMessage = Array.isArray(messagePop)
+                ? messagePop[Math.floor(Math.random() * messagePop.length)]
+                : messagePop;
+            createPopup(randomMessage);
         }
-    }
-    const randomMessage = messagepop[Math.floor(Math.random() * messagepop.length)];
-    createPopup(randomMessage);
+
+        timer();
+    });
 }
 
-function verifymessage() {
-    const isUntrusted = showMessageForuntrustedWebsites()
 
-    if (!isUntrusted) {
-        showMessageForWebsite();
-    }
-    
-    timer();
-}
-
-window.onload = verifymessage;
+window.onload = verifyMessage();
 
 
 

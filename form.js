@@ -1,32 +1,27 @@
 function copyhref(){
-    const url = window.location.href;
-    document.getElementById('website').value = url;
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        let currentTabUrl = tabs[0].url;
+        document.getElementById('website').value = currentTabUrl;
+    });
 }
-
 document.getElementById('buttomicon').onclick = copyhref;
 
-function submit(event){
-event.preventDefault();
-let storedMessages = JSON.parse(localStorage.getItem('websiteMessages')) || {};
+function submit(event) {
+    event.preventDefault();
 
-let newsite = document.getElementById('website').value;
-let newmessage = document.getElementById('message').value;
+    let newsite = document.getElementById('website').value;
+    let newmessage = document.getElementById('message').value;
 
-if (storedMessages[newsite]){
-    if(Array.isArray(storedMessages[newsite])){
-        storedMessages
-    }else{
-        storedMessages[newsite] = [storedMessages[newsite],[newmessage]];
-    }
-}else{
-    storedMessages[newsite] = [newmessage];
-}
-
-localStorage.setItem('websiteMessages', JSON.stringify(storedMessages));
-
-document.getElementById('website').value = '';
-document.getElementById('message').value = '';
-
+    chrome.runtime.sendMessage({
+        action: 'saveMessage',
+        data: { newsite, newmessage }
+    }, (response) => {
+        if (response.status === 'success') {
+            console.log('Message saved successfully!');
+            document.getElementById('website').value = '';
+            document.getElementById('message').value = '';
+        }
+    });
 }
 
 document.getElementById('UTTSites').onsubmit = submit;
