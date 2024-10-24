@@ -53,15 +53,11 @@ function createPopup(message) {
     document.body.appendChild(popup);
 }
 
-
-
-
-function verifyMessage() {
+function getMessage(type, callback) {
     chrome.runtime.sendMessage({ action: 'getMessages' }, (response) => {
-        const storedMessages = JSON.parse(response.websiteMessages || '{}');
+        const storedMessages = JSON.parse(response[type] || '{}');
         const url = window.location.href;
-
-        let messagePop = storedMessages['default'];
+        let messagePop = null;
 
         for (let site in storedMessages) {
             if (url.includes(site)) {
@@ -74,15 +70,31 @@ function verifyMessage() {
             const randomMessage = Array.isArray(messagePop)
                 ? messagePop[Math.floor(Math.random() * messagePop.length)]
                 : messagePop;
-            createPopup(randomMessage);
+            callback(randomMessage);
+        } else {
+            callback(null);
         }
-
-        timer();
     });
 }
 
+function verifyMessage() {
+    getMessage('untrustedWebsites', (untrustedMessage) => {
+        if (untrustedMessage) {
+            createPopup(untrustedMessage);
+            timer();
+        } else {
+            getMessage('websiteMessages', (trustedMessage) => {
+                if (trustedMessage) {
+                    createPopup(trustedMessage);
+                    timer();
+                }
+            });
+        }
+        
+    });
+}
 
-window.onload = verifyMessage();
+window.onload = verifyMessage;
 
 
 

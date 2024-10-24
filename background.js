@@ -1,3 +1,5 @@
+chrome.runtime.onInstalled.addListener(() => {
+
 const websiteMessages = {
     'youtube.com': [
         "Hey hi YouTube! Ready to lose track of time with 'just one more video'?",
@@ -32,8 +34,7 @@ const websiteMessages = {
     "dropbox.com": "Dropbox: Where your files go to hide... somewhere in the cloud.",
     "zoom.us": "Zoom: Where the mute button becomes the most powerful tool.",
     "paypal.com": "PayPal: Conveniently draining your funds, one transaction at a time.",
-    "127.0.0.1:5500/main.html": "TestField - You're working locally, good luck debugging!",
-    "default": "Welcome to the Internet, where every click is a new adventure!"
+    "127.0.0.1:5500/main.html": "TestField - You're working locally, good luck debugging!"
 };
 
 const untrustedWebsites = {
@@ -48,18 +49,31 @@ const untrustedWebsites = {
 chrome.storage.local.set({ websiteMessages: JSON.stringify(websiteMessages) });
 chrome.storage.local.set( {untrustedWebsites: JSON.stringify(untrustedWebsites)});
 
+chrome.storage.local.get(['websiteMessages', 'untrustedWebsites'], (result) => {
+    if (!result.websiteMessages) {
+        chrome.storage.local.set({ websiteMessages });
+    }
+    if (!result.untrustedWebsites) {
+        chrome.storage.local.set({ untrustedWebsites });
+    }
+});
+});
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'getMessages') {
         // Get stored messages for the content script
-        chrome.storage.local.get('websiteMessages', (result) => {
-            sendResponse({ websiteMessages: result.websiteMessages });
+        chrome.storage.local.get(['websiteMessages', 'untrustedWebsites'], (result) => {
+            sendResponse({
+                websiteMessages: result.websiteMessages,
+                untrustedWebsites: result.untrustedWebsites
+            });
         });
         return true; // keep the message channel open for async sendResponse
     }
 
     if (request.action === 'saveMessage') {
         // Save new messages from the popup
-        let { newsite, newmessage } = request.data;
+        const { newsite, newmessage } = request.data;
 
         chrome.storage.local.get('websiteMessages', (result) => {
             let storedMessages = JSON.parse(result.websiteMessages || '{}');
