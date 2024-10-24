@@ -56,20 +56,34 @@ function createPopup(message) {
 function getMessage(type, callback) {
     chrome.runtime.sendMessage({ action: 'getMessages' }, (response) => {
         const storedMessages = JSON.parse(response[type] || '{}');
-        const url = window.location.href;
-        let messagePop = null;
+        const url = window.location.href.toLowerCase();
+        const domain = new URL(url).hostname.toLowerCase(); // Extracts the domain like "google.com"
 
-        for (let site in storedMessages) {
-            if (url.includes(site)) {
-                messagePop = storedMessages[site];
-                break;
+        let exactMatchMessage = null;
+        let keywordMatchMessage = null;
+
+        // Step 1: Check for an exact domain match
+        if (storedMessages[domain]) {
+            exactMatchMessage = storedMessages[domain];
+        }
+
+        // Step 2: If no exact domain match, check for keyword matches in the URL
+        if (!exactMatchMessage) {
+            for (let keyword in storedMessages) {
+                if (url.includes(keyword.toLowerCase())) {
+                    keywordMatchMessage = storedMessages[keyword];
+                    break;
+                }
             }
         }
 
-        if (messagePop) {
-            const randomMessage = Array.isArray(messagePop)
-                ? messagePop[Math.floor(Math.random() * messagePop.length)]
-                : messagePop;
+        // Step 3: Show the exact domain message if found, else show the keyword-based message
+        const messageToDisplay = exactMatchMessage || keywordMatchMessage;
+
+        if (messageToDisplay) {
+            const randomMessage = Array.isArray(messageToDisplay)
+                ? messageToDisplay[Math.floor(Math.random() * messageToDisplay.length)]
+                : messageToDisplay;
             callback(randomMessage);
         } else {
             callback(null);

@@ -1,7 +1,6 @@
 .Floating-window{
     position: fixed;
     justify-content: center;
-    width: 100%;
     text-align: center;
     bottom: 0;
     left: 0;
@@ -12,13 +11,14 @@
     font-family: 'Courier New', Courier, monospace;
     font-size: 3.5vh;
     z-index: 10000000;
-    width: 90%;
+    width: 80%;
     margin: auto;
     margin-bottom: 1.3%;
-    border-radius: 10vh;
-    transform: translateX(100%);
-    animation: Xbox 1s ease-in forwards;
+    border-radius: 6vh;
+    animation: Xbox 0.8s ease-in;
+    transform: skew(100%);
 }
+
 .closing{
     border: none;
     background-color: red;
@@ -35,10 +35,6 @@
 }
 
 @keyframes Xbox{
-    from{
-        transform: translateX(100%);
-    }
-    to{
-        transform: translateX(0);
-    }
-}
+    from{transform: skew(0); width: 0; opacity: 0;}
+    to{transform: skew(100%); width: 80%; opacity: 1;}
+}   

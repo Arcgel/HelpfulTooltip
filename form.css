@@ -1,11 +1,18 @@
 body {
     width: 300px;
+    height: auto;
     font-family: 'Times New Roman', Times, serif;
     font-size: 20px;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    padding: 20px 0 0 0;
 }
+
 input {
     padding: 10px 5px 10px 5px;
     border-radius: 15px;
+    width: 63vw;
 }
 p {
     font-size: 17px;
@@ -23,10 +30,23 @@ p {
     border: none;
     color: white;
 }
-div{
-   display: flex;
-   align-items: center; 
+
+
+.siteinput{
+    position: relative;
+    display: inline-block;
 }
+.siteinput input{
+    padding-right: 30px;
+}
+.siteinput button{
+    position: absolute;
+    right: 0;
+    left: 20;
+    height: 100%;
+    
+}
+
 button{
     border-radius: 10px;
     cursor: pointer;
@@ -37,5 +57,46 @@ button{
     border: none;
     background: transparent;
     padding: 0;
-    
+    margin-left: 5%;
+}
+.messageinput{
+    position: relative;
+    display: inline-block;
+}
+.messageinput #message{   
+    height: 100px;
+    width: 70vw;
+    padding: 10px 5px 10px 5px;
+    border-radius: 15px;
+    border: 2px solid black;
+    resize: none;
+}
+
+.messageinput #forward{
+    position: absolute;
+    right: 5px;
+    bottom: 10px;
+    border: none;
+    background-color: transparent;
+}
+.Configure{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.CLI{
+    text-align: center;
+    margin-top: 35px;
+    background-color: black;
+    color: white;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 15px;
+    padding: 5px 0 5px 0;
+    border-radius: 10px;
+}
+a{
+    text-decoration: none;
+    color: white;
 }

@@ -11,18 +11,23 @@
 </head>
 
 <body>
+    <div class="Configure">
     <form id="UTTSites">
         <p>Site name:</p>
-        <div>
+        <div class="siteinput">
             <input type="text" id="website" placeholder="Here" required> 
             <button type="button" class="buttonicon" id="buttomicon"><img src="Images/link.png" alt="Submit" class="icon"></button>
         </div>
         <p>Message:</p> 
-        <div>
-            <input type="text" id="message" placeholder="Here" required>
-            <button type="submit" id="forward">Submit</button>
+        <div class="messageinput">
+            <textarea id="message" placeholder="Here" required></textarea>
+            <button type="submit" id="forward">=>></button>
         </div>
     </form>
+    <div class="CLI">
+        <a href="">Configure Settings</a>
+    </div>
+    </div>
 </body>
 <script src="form.js"></script>
 </html>
