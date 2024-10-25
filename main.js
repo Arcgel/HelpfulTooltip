@@ -68,6 +68,21 @@ function getMessage(type, callback) {
             const keyword = searchQuery.toLowerCase();
             const easterEggMessages = {
                 "javascript": "You've unlocked a special JavaScript Easter egg!",
+                "dark souls": ["To Be Alive... To Walk This Earth... That's The Real Curse Right There.",
+                            "Only In Truth, The Lords Will Abandon Their Thrones, And The Unkindled Will Tise. Nameless Accursed Undead, Unfit Even To Be Cinder. And So It Is That Ash Seeketh Embers...",
+                            "Seek Strength. The Rest Will Follow."
+                ],
+                "cat" : "Bilie Elish: Meow, Meow, Meow, Meow, Meow, Meow, Meow, Meow,",
+                "dragonball": ["Its over 9000!!!!!!!!!!!!!!!!!!!!!!!!",
+                                "But Perhaps It Is My Anger That Has Made Me Blind...",
+                                "We can't just give up because things aren't the way we want them to be."
+                ],
+                "plant vs zombies garden warfare": "The Author is a big fan of the Series",
+                "monster hunter rise": "Better than world - Author",
+                "java" : "Its either this or C is your first language",
+                "i wanna die" : "Watch This: https://youtu.be/Rl1ImG2b1k8",
+                
+
                 // Add more keyword-specific Easter egg messages here
             };
 

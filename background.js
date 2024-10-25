@@ -1,6 +1,6 @@
 chrome.runtime.onInstalled.addListener(() => {
 
-    const websiteMessages = {
+    const websiteMessages = { //For trusted website and showing messaages if the site is found
         'youtube.com': [
             "Hey hi YouTube! Ready to lose track of time with 'just one more video'?",
             "Hello Youtube"
@@ -40,10 +40,11 @@ chrome.runtime.onInstalled.addListener(() => {
             "Hello World"
         ],
         'docs.google.com': ["The most important thing is the document."],
-        "https://docs.google.com/presentation/d/1KxhaocEwFEv9k_zdvc2jvVhqK0S17lBg/edit#slide=id.p1" : ["database management"]
+        "https://docs.google.com/presentation/d/1KxhaocEwFEv9k_zdvc2jvVhqK0S17lBg/edit#slide=id.p1" : ["database management"],
+        "https://www.youtube.com/watch?v=Rl1ImG2b1k8" : ["Cheering for you and get well"]
     };
     
-    const untrustedWebsites = {
+    const untrustedWebsites = { //For untrusted website and showing messaages if the site is found to warn the user
         "kissanime.com.ru": [
             "Kissanime with a twist of Russia? Watch out for shady streams!",
             "Virus Infested Site"
@@ -52,7 +53,7 @@ chrome.runtime.onInstalled.addListener(() => {
         "aniwave.com.es": ["Spanish waves of anime or a sea of scams? Surf with caution!"]
     };
 
-chrome.storage.local.set({ websiteMessages: JSON.stringify(websiteMessages) });
+chrome.storage.local.set({ websiteMessages: JSON.stringify(websiteMessages) });     /*For storing messages in chrome storage*/
 chrome.storage.local.set( {untrustedWebsites: JSON.stringify(untrustedWebsites)});
 
 chrome.storage.local.get(['websiteMessages', 'untrustedWebsites'], (result) => {
@@ -63,39 +64,38 @@ chrome.storage.local.get(['websiteMessages', 'untrustedWebsites'], (result) => {
         chrome.storage.local.set({ untrustedWebsites });
     }
 });
-});
+}); //Checking if the messages are in chrome storage
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'getMessages') {
         // Get stored messages for the content script
         chrome.storage.local.get(['websiteMessages', 'untrustedWebsites'], (result) => {
             sendResponse({
-                websiteMessages: result.websiteMessages,
-                untrustedWebsites: result.untrustedWebsites
+                websiteMessages: result.websiteMessages,        /*Sending the messages to main.js so it can be displayd */
+                untrustedWebsites: result.untrustedWebsites                 
             });
         });
         return true; // keep the message channel open for async sendResponse
     }
 
-    if (request.action === 'saveMessage') {
-        // Save new messages from the popup
+    if (request.action === 'saveMessage') {  //Recieving messages from form.js so that users can have thier own messages
         const { newsite, newmessage } = request.data;
 
         chrome.storage.local.get('websiteMessages', (result) => {
-            let storedMessages = JSON.parse(result.websiteMessages || '{}');
+            let storedMessages = JSON.parse(result.websiteMessages || '{}'); //Adding the data on the array
 
-            if (storedMessages[newsite]) {
+            if (storedMessages[newsite]) { 
                 if (Array.isArray(storedMessages[newsite])) {
-                    storedMessages[newsite].push(newmessage);
+                    storedMessages[newsite].push(newmessage); //Pushing the new message if Site and an Array of Message already exists
                 } else {
-                    storedMessages[newsite] = [storedMessages[newsite], newmessage];
+                    storedMessages[newsite] = [storedMessages[newsite], newmessage]; //Creating a new array if there's only one message
                 }
             } else {
-                storedMessages[newsite] = [newmessage];
+                storedMessages[newsite] = [newmessage];  // it essentially creat
             }
 
             chrome.storage.local.set({ websiteMessages: JSON.stringify(storedMessages) }, () => {
-                sendResponse({ status: 'success' });
+                sendResponse({ status: 'success' }); ///checking if it got pass through
             });
         });
         return true;
