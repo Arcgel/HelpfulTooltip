@@ -52,55 +52,63 @@ function createPopup(message) {
     popup.appendChild(parentDiv);
     document.body.appendChild(popup);
 }
-
 function getMessage(type, callback) {
     chrome.runtime.sendMessage({ action: 'getMessages' }, (response) => {
         const storedMessages = JSON.parse(response[type] || '{}');
         const url = window.location.href;
-        const domain = new URL(url).hostname; // Extracts the domain like "google.com"
+        const domain = new URL(url).hostname; // Extracts the domain like "docs.google.com"
+        const fullPath = new URL(url).href;
 
         let exactMatchMessage = null;
-        let keywordMatchMessage = null;
 
         // Step 1: Check for an exact domain match
         if (storedMessages[domain]) {
-            if (Array.isArray(storedMessages[domain])) {
-                exactMatchMessage = storedMessages[domain];
-            } else {
-                // Check if the message contains sub-path rules
-                for (let path in storedMessages[domain]) {
-                    if (url.includes(`${domain}/${path}`)) {
-                        exactMatchMessage = storedMessages[domain][path];
-                        break;
-                    }
+            exactMatchMessage = storedMessages[domain];
+        }
+
+        if (storedMessages[fullPath]){
+            exactMatchMessage = storedMessages[fullPath];
+        } 
+
+        // Step 2: Check for subdomain or parent domain matches
+        const subdomainParts = domain.split('.'); // Split domain into parts
+        const subdomainMatches = []; // To hold possible matches
+
+        // Build possible subdomains (e.g., "google.com" from "docs.google.com")
+        for (let i = 0; i < subdomainParts.length; i++) {
+            subdomainMatches.push(subdomainParts.slice(i).join('.'));
+        }
+
+        // Check for subdomain matches, prioritizing more specific matches first
+        for (let subdomain of subdomainMatches) {
+            if (storedMessages[subdomain]) {
+                if (!exactMatchMessage) {
+                    exactMatchMessage = storedMessages[subdomain]; // Take the first match found
                 }
             }
         }
 
-        // Step 2: If no exact domain match, check for keyword matches in the URL
+        // Step 3: If no exact match, check for keyword matches in the URL
         if (!exactMatchMessage) {
             for (let keyword in storedMessages) {
                 if (url.includes(keyword.toLowerCase())) {
-                    keywordMatchMessage = storedMessages[keyword];
+                    exactMatchMessage = storedMessages[keyword];
                     break;
                 }
             }
         }
 
-        // Step 3: Show the exact domain message if found, else show the keyword-based message
-        const messageToDisplay = exactMatchMessage || keywordMatchMessage;
-
-        if (messageToDisplay) {
-            const randomMessage = Array.isArray(messageToDisplay)
-                ? messageToDisplay[Math.floor(Math.random() * messageToDisplay.length)]
-                : messageToDisplay;
+        // Step 4: Determine which message to display
+        if (exactMatchMessage) {
+            const randomMessage = Array.isArray(exactMatchMessage)
+                ? exactMatchMessage[Math.floor(Math.random() * exactMatchMessage.length)]
+                : exactMatchMessage;
             callback(randomMessage);
         } else {
             callback(null);
         }
     });
 }
-
 function verifyMessage() {
     getMessage('untrustedWebsites', (untrustedMessage) => {
         if (untrustedMessage) {

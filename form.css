@@ -83,6 +83,9 @@ button{
     display: flex;
     align-items: center;
     flex-direction: column;
+    border: 3px solid black;
+    padding: 20px;
+    border-radius: 20px;
 }
 .CLI{
     text-align: center;
