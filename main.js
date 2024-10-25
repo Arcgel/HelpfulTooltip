@@ -56,15 +56,25 @@ function createPopup(message) {
 function getMessage(type, callback) {
     chrome.runtime.sendMessage({ action: 'getMessages' }, (response) => {
         const storedMessages = JSON.parse(response[type] || '{}');
-        const url = window.location.href.toLowerCase();
-        const domain = new URL(url).hostname.toLowerCase(); // Extracts the domain like "google.com"
+        const url = window.location.href;
+        const domain = new URL(url).hostname; // Extracts the domain like "google.com"
 
         let exactMatchMessage = null;
         let keywordMatchMessage = null;
 
         // Step 1: Check for an exact domain match
         if (storedMessages[domain]) {
-            exactMatchMessage = storedMessages[domain];
+            if (Array.isArray(storedMessages[domain])) {
+                exactMatchMessage = storedMessages[domain];
+            } else {
+                // Check if the message contains sub-path rules
+                for (let path in storedMessages[domain]) {
+                    if (url.includes(`${domain}/${path}`)) {
+                        exactMatchMessage = storedMessages[domain][path];
+                        break;
+                    }
+                }
+            }
         }
 
         // Step 2: If no exact domain match, check for keyword matches in the URL

@@ -12,6 +12,10 @@ function submit(event) {
     let newsite = document.getElementById('website').value;
     let newmessage = document.getElementById('message').value;
 
+    let localData = JSON.parse(localStorage.getItem('userMessages') || '{}');
+    localData[newsite] = newmessage;
+    localStorage.setItem('userMessages', JSON.stringify(localData));
+
     chrome.runtime.sendMessage({
         action: 'saveMessage',
         data: { newsite, newmessage }
