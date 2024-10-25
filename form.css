@@ -6,7 +6,6 @@ body {
     display: flex;
     justify-content: center;
     justify-items: center;
-<<<<<<< HEAD
     padding: 20px 0 0 0;    
 }
 
@@ -14,9 +13,6 @@ body {
     background-image: url(Images/petal\ falling.gif);
     background-repeat: no-repeat;
     background-size: cover;
-=======
-    padding: 15px 0 10px 0;
->>>>>>> feda7beb7e308650550d4bba444bcd0441a6dee4
 }
 
 input {
@@ -96,30 +92,31 @@ button{
 }
 .CLI{
     text-align: center;
-    margin-top: 35px;
+    margin-top: 25px;
     background-color: black;
     color: white;
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 5px;
     font-size: 15px;
-    padding: 5px 0 5px 0;
+    padding: 0 0 0 0;
     border-radius: 10px;
-    margin-top: 5px;
 }
 a{
     text-decoration: none;
     color: white;
+
 }
 #sakura-button{
-    border: 0;
+    border: none;
     background: none;
-}
-
-#sakura-button:hover{
-    cursor: default;
+    cursor: pointer;
 }
 
 #sakuraButton-img{
-    height: 10px;
+    height: 20px;
+    width: 20px;
 }
