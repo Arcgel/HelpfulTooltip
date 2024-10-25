@@ -58,47 +58,64 @@ function getMessage(type, callback) {
         const url = window.location.href;
         const domain = new URL(url).hostname; // Extracts the domain like "docs.google.com"
         const fullPath = new URL(url).href;
+        const queryParams = new URL(url).searchParams;
+        const searchQuery = queryParams.get("q");
 
         let exactMatchMessage = null;
 
-        // Step 1: Check for an exact domain match
-        if (storedMessages[domain]) {
-            exactMatchMessage = storedMessages[domain];
-        }
+        // Step 1: Check for specific "easter egg" keyword in the search query (like "q=javascript")
+        if (searchQuery) {
+            const keyword = searchQuery.toLowerCase();
+            const easterEggMessages = {
+                "javascript": "You've unlocked a special JavaScript Easter egg!",
+                // Add more keyword-specific Easter egg messages here
+            };
 
-        if (storedMessages[fullPath]){
-            exactMatchMessage = storedMessages[fullPath];
-        } 
-
-        // Step 2: Check for subdomain or parent domain matches
-        const subdomainParts = domain.split('.'); // Split domain into parts
-        const subdomainMatches = []; // To hold possible matches
-
-        // Build possible subdomains (e.g., "google.com" from "docs.google.com")
-        for (let i = 0; i < subdomainParts.length; i++) {
-            subdomainMatches.push(subdomainParts.slice(i).join('.'));
-        }
-
-        // Check for subdomain matches, prioritizing more specific matches first
-        for (let subdomain of subdomainMatches) {
-            if (storedMessages[subdomain]) {
-                if (!exactMatchMessage) {
-                    exactMatchMessage = storedMessages[subdomain]; // Take the first match found
-                }
+            if (easterEggMessages[keyword]) {
+                exactMatchMessage = easterEggMessages[keyword];
             }
         }
 
-        // Step 3: If no exact match, check for keyword matches in the URL
+        // Step 2: If no keyword match, check for an exact domain match
         if (!exactMatchMessage) {
-            for (let keyword in storedMessages) {
-                if (url.includes(keyword.toLowerCase())) {
-                    exactMatchMessage = storedMessages[keyword];
-                    break;
+            if (storedMessages[domain]) {
+                exactMatchMessage = storedMessages[domain];
+            }
+
+            if (storedMessages[fullPath]) {
+                exactMatchMessage = storedMessages[fullPath];
+            }
+
+            // Step 3: Check for subdomain or parent domain matches
+            const subdomainParts = domain.split('.'); // Split domain into parts
+            const subdomainMatches = []; // To hold possible matches
+
+            // Build possible subdomains (e.g., "google.com" from "docs.google.com")
+            for (let i = 0; i < subdomainParts.length; i++) {
+                subdomainMatches.push(subdomainParts.slice(i).join('.'));
+            }
+
+            // Check for subdomain matches, prioritizing more specific matches first
+            for (let subdomain of subdomainMatches) {
+                if (storedMessages[subdomain]) {
+                    if (!exactMatchMessage) {
+                        exactMatchMessage = storedMessages[subdomain]; // Take the first match found
+                    }
+                }
+            }
+
+            // Step 4: If no exact match, check for keyword matches in the URL
+            if (!exactMatchMessage) {
+                for (let keyword in storedMessages) {
+                    if (url.includes(keyword.toLowerCase())) {
+                        exactMatchMessage = storedMessages[keyword];
+                        break;
+                    }
                 }
             }
         }
 
-        // Step 4: Determine which message to display
+        // Step 5: Determine which message to display
         if (exactMatchMessage) {
             const randomMessage = Array.isArray(exactMatchMessage)
                 ? exactMatchMessage[Math.floor(Math.random() * exactMatchMessage.length)]
