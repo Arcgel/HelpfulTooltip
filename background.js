@@ -14,7 +14,7 @@ chrome.runtime.onInstalled.addListener(() => {
         "wikipedia.org": ["Ah, Wikipedia... Let's see how deep you can go into the rabbit hole."],
         "linkedin.com": ["Welcome to LinkedIn, where professionals connect and humble brag."],
         "instagram.com": ["Instagram, where reality is filtered and likes make the world go round."],
-        //"google.com": ["Google knows everything. Even the things you thought you forgot."],
+        "google.com": ["Google knows everything. Even the things you thought you forgot."],
         "yahoo.com": ["Yahoo! Still surviving... somehow."],
         "bing.com": ["Bing: Still trying."],
         "chat.openai.com": ["ChatGPT: Here to make you wonder if bots will take over the world."],
@@ -39,7 +39,7 @@ chrome.runtime.onInstalled.addListener(() => {
             "Bug Fixed",
             "Hello World"
         ],
-        //'docs.google.com': ["The most important thing is the document."],
+        'docs.google.com': ["The most important thing is the document."],
         "https://docs.google.com/presentation/d/1KxhaocEwFEv9k_zdvc2jvVhqK0S17lBg/edit#slide=id.p1" : ["database management"]
     };
     
