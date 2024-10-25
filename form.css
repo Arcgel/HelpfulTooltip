@@ -6,6 +6,7 @@ body {
     display: flex;
     justify-content: center;
     justify-items: center;
+<<<<<<< HEAD
     padding: 20px 0 0 0;    
 }
 
@@ -13,12 +14,15 @@ body {
     background-image: url(Images/petal\ falling.gif);
     background-repeat: no-repeat;
     background-size: cover;
+=======
+    padding: 15px 0 10px 0;
+>>>>>>> feda7beb7e308650550d4bba444bcd0441a6dee4
 }
 
 input {
     padding: 10px 5px 10px 5px;
     border-radius: 15px;
-    width: 63vw;
+    width: 61.5vw;
 }
 p {
     font-size: 17px;
@@ -48,7 +52,7 @@ p {
 .siteinput button{
     position: absolute;
     right: 0;
-    left: 20;
+    left: 10;
     height: 100%;
     
 }
@@ -89,9 +93,6 @@ button{
     display: flex;
     align-items: center;
     flex-direction: column;
-    border: 3px solid black;
-    padding: 20px;
-    border-radius: 20px;
 }
 .CLI{
     text-align: center;
@@ -104,6 +105,7 @@ button{
     font-size: 15px;
     padding: 5px 0 5px 0;
     border-radius: 10px;
+    margin-top: 5px;
 }
 a{
     text-decoration: none;

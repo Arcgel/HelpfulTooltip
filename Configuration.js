@@ -6,15 +6,27 @@ function displayMessages() {
         messageList.innerHTML = '';
 
         Object.keys(storedMessages).forEach((site) => {
+            const siteDiv = document.createElement('div')
+            siteDiv.innerHTML = `<h2>${site}<h2>`
+            siteDiv.className = 'siteDiv'
+
             const messageDiv = document.createElement('div');
-            messageDiv.innerHTML = `<p>${site}: ${storedMessages[site]}</p>`;
+            messageDiv.innerHTML = `<p> ${storedMessages[site]} </p>`;
+            messageDiv.className = 'messageoutput'
             
             const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'Delete';
             deleteButton.onclick = () => deleteMessage(site);
+            deleteButton.className = 'Delete'
 
-            messageDiv.appendChild(deleteButton);
-            messageList.appendChild(messageDiv);
+            const delbutimg = document.createElement('img');
+            delbutimg.src = "images/delete.png"
+            delbutimg.alt= "Delete";
+            delbutimg.className = "delbutimg";
+
+            deleteButton.appendChild(delbutimg);
+            messageDiv.appendChild(deleteButton);   
+            siteDiv.appendChild(messageDiv);
+            messageList.appendChild(siteDiv)
         });
     });
 }
