@@ -1,11 +1,26 @@
+// JavaScript: form.js
+
+// Function to copy the URL of the current tab
 function copyhref() {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         let currentTabUrl = tabs[0].url;
         document.getElementById('website').value = currentTabUrl;
     });
 }
-document.getElementById('buttomicon').onclick = copyhref;
 
+// Event listeners setup after DOM content is loaded
+document.addEventListener("DOMContentLoaded", () => {
+    const copyButton = document.getElementById('buttomicon');
+    const submitButton = document.getElementById('UTTSites');
+    const toggleButton = document.getElementById("sakura-button");
+
+    // Attach event listeners
+    copyButton.addEventListener("click", copyhref);
+    toggleButton.addEventListener("click", toggleBackground);
+    submitButton.onsubmit = submit;
+});
+
+// Function to handle form submission
 function submit(event) {
     event.preventDefault();
 
@@ -30,7 +45,7 @@ function submit(event) {
         if (response.status === 'success') {
             console.log('Message saved successfully!');
 
-            // Now, transfer from local storage to websiteMessages in Chrome storage
+            // Transfer from local storage to websiteMessages in Chrome storage
             chrome.storage.local.get('websiteMessages', (result) => {
                 let storedMessages = JSON.parse(result.websiteMessages || '{}');
 
@@ -70,7 +85,7 @@ function submit(event) {
     });
 }
 
-
-
-
-document.getElementById('UTTSites').onsubmit = submit;
+// Function to toggle background
+function toggleBackground() {
+    document.body.classList.toggle("alt-background");
+}

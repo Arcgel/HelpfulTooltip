@@ -6,7 +6,13 @@ body {
     display: flex;
     justify-content: center;
     justify-items: center;
-    padding: 20px 0 0 0;
+    padding: 20px 0 0 0;    
+}
+
+.alt-background {
+    background-image: url(Images/petal\ falling.gif);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 input {
@@ -102,4 +108,16 @@ button{
 a{
     text-decoration: none;
     color: white;
+}
+#sakura-button{
+    border: 0;
+    background: none;
+}
+
+#sakura-button:hover{
+    cursor: default;
+}
+
+#sakuraButton-img{
+    height: 10px;
 }
