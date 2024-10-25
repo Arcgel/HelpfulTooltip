@@ -71,7 +71,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         // Get stored messages for the content script
         chrome.storage.local.get(['websiteMessages', 'untrustedWebsites'], (result) => {
             sendResponse({
-                websiteMessages: result.websiteMessages,        /*Sending the messages to main.js so it can be displayd */
+                websiteMessages: result.websiteMessages,/*Sending the messages to main.js so it can be displayed */
                 untrustedWebsites: result.untrustedWebsites                 
             });
         });
@@ -91,7 +91,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     storedMessages[newsite] = [storedMessages[newsite], newmessage]; //Creating a new array if there's only one message
                 }
             } else {
-                storedMessages[newsite] = [newmessage];  // it essentially creat
+                storedMessages[newsite] = [newmessage];  // it essentially create a new site and add the message.
             }
 
             chrome.storage.local.set({ websiteMessages: JSON.stringify(storedMessages) }, () => {

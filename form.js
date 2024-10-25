@@ -8,6 +8,31 @@ function copyhref() {
     });
 }
 
+// Function to transfer local storage data to Chrome storage
+function transferLocalToChrome() {
+    let localData = JSON.parse(localStorage.getItem('userMessages') || '{}');
+    chrome.storage.local.get('websiteMessages', (result) => {
+        let storedMessages = JSON.parse(result.websiteMessages || '{}');
+
+        // Update Chrome storage with data from local storage
+        for (const site in localData) {
+            if (!storedMessages[site]) {
+                storedMessages[site] = [localData[site]]; // Create new entry
+            } else {
+                // Check if the message already exists
+                if (!storedMessages[site].includes(localData[site])) {
+                    storedMessages[site].push(localData[site]); // Add if it doesn't exist
+                }
+            }
+        }
+
+        // Save updated messages back to Chrome storage
+        chrome.storage.local.set({ websiteMessages: JSON.stringify(storedMessages) }, () => {
+            console.log('Local storage data transferred to Chrome storage successfully!');
+        });
+    });
+}
+
 // Event listeners setup after DOM content is loaded
 document.addEventListener("DOMContentLoaded", () => {
     const copyButton = document.getElementById('buttomicon');
@@ -18,6 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
     copyButton.addEventListener("click", copyhref);
     toggleButton.addEventListener("click", toggleBackground);
     submitButton.onsubmit = submit;
+
+    transferLocalToChrome();
 });
 
 // Function to handle form submission

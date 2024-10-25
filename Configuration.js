@@ -36,6 +36,13 @@ function deleteMessage(site) {
         let storedMessages = JSON.parse(result.websiteMessages || '{}');
         delete storedMessages[site];
 
+        let localData = JSON.parse(localStorage.getItem('userMessages') || '{}');
+        if (localData[site]) {
+            delete localData[site];
+            localStorage.setItem('userMessages', JSON.stringify(localData));
+            console.log(`Deleted ${site} from local storage`);
+        }
+
         chrome.storage.local.set({ websiteMessages: JSON.stringify(storedMessages) }, () => {
             displayMessages(); // Refresh the list after deletion
         });

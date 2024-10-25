@@ -9,7 +9,7 @@ function timer() {
             timeLeft--;
         }
     }, 1000);
-}
+} //Timer Logic that starts counting if a message is created
 
 function Delete_verification() {
     if (document.getElementById('Floating-Window')) {
@@ -17,14 +17,14 @@ function Delete_verification() {
     } else {
         return;
     }
-}
+} //Fixing the error on the Chrome error extension
 
 function notneeded() {
     const tooltip = document.getElementById('Floating-Window');
     if (tooltip) {
         tooltip.remove();
     }
-}
+} //Logic for the Close button
 
 function createPopup(message) {
     const existingPopup = document.getElementById('Floating-Window');
@@ -51,23 +51,43 @@ function createPopup(message) {
     parentDiv.appendChild(closeButton);
     popup.appendChild(parentDiv);
     document.body.appendChild(popup);
+} // Very Important Logic as it creates the popup on any sites and it will sits on the top of the page.
+
+function getSubdomainMessage(domain, storedMessages) {
+    const subdomainParts = domain.split('.'); // Split domain into parts
+    const subdomainMatches = []; // To hold possible matches
+
+    // Build possible subdomains (e.g., "google.com" from "docs.google.com")
+    for (let i = 0; i < subdomainParts.length; i++) {
+        subdomainMatches.push(subdomainParts.slice(i).join('.'));
+    }
+
+    // Check for subdomain matches, prioritizing more specific matches first
+    for (let subdomain of subdomainMatches) {
+        if (storedMessages[subdomain]) {
+            return storedMessages[subdomain]; // Return the first match found
+        }
+    }
+
+    return null; // Return null if no match found
 }
+
 function getMessage(type, callback) {
     chrome.runtime.sendMessage({ action: 'getMessages' }, (response) => {
         const storedMessages = JSON.parse(response[type] || '{}');
         const url = window.location.href;
         const domain = new URL(url).hostname; // Extracts the domain like "docs.google.com"
         const fullPath = new URL(url).href;
-        const queryParams = new URL(url).searchParams;
-        const searchQuery = queryParams.get("q");
+        const queryParams = new URL(url).searchParams; // The searchParams object will include the parameters q and sort
+        const searchQuery = queryParams.get("q"); // Extracts the search query like "q=javascript" this is normally used in bing and google
 
         let exactMatchMessage = null;
 
         // Step 1: Check for specific "easter egg" keyword in the search query (like "q=javascript")
         if (searchQuery) {
-            const keyword = searchQuery.toLowerCase();
+            const keyword = searchQuery.toLowerCase(); //So that it can read despite the Upper case and Capitalization
             const easterEggMessages = {
-                "javascript": "You've unlocked a special JavaScript Easter egg!",
+                "javascript": "Bought to you by: JavaScript Cebu's Hackathon",
                 "dark souls": ["To Be Alive... To Walk This Earth... That's The Real Curse Right There.",
                             "Only In Truth, The Lords Will Abandon Their Thrones, And The Unkindled Will Tise. Nameless Accursed Undead, Unfit Even To Be Cinder. And So It Is That Ash Seeketh Embers...",
                             "Seek Strength. The Rest Will Follow."
@@ -81,52 +101,25 @@ function getMessage(type, callback) {
                 "monster hunter rise": "Better than world - Author",
                 "java" : "Its either this or C is your first language",
                 "i wanna die" : "Watch This: https://youtu.be/Rl1ImG2b1k8",
-                
-
                 // Add more keyword-specific Easter egg messages here
-            };
+            };//Array for you easter eggs
 
-            if (easterEggMessages[keyword]) {
-                exactMatchMessage = easterEggMessages[keyword];
+            if (easterEggMessages[keyword]/*Compare the Query to the Array easterEggMessages*/) {
+                exactMatchMessage = easterEggMessages[keyword]; // Check if there an exact match
             }
         }
+            //Check if its the same as a full URL for more specific Messagin
+        if (storedMessages[fullPath]/*Compare the Query to the trsuted and untrusted array*/) {
+            exactMatchMessage = storedMessages[fullPath];
+        }
 
-        // Step 2: If no keyword match, check for an exact domain match
+        // If no keyword match, check for an exact domain match
         if (!exactMatchMessage) {
             if (storedMessages[domain]) {
                 exactMatchMessage = storedMessages[domain];
             }
-
-            if (storedMessages[fullPath]) {
-                exactMatchMessage = storedMessages[fullPath];
-            }
-
-            // Step 3: Check for subdomain or parent domain matches
-            const subdomainParts = domain.split('.'); // Split domain into parts
-            const subdomainMatches = []; // To hold possible matches
-
-            // Build possible subdomains (e.g., "google.com" from "docs.google.com")
-            for (let i = 0; i < subdomainParts.length; i++) {
-                subdomainMatches.push(subdomainParts.slice(i).join('.'));
-            }
-
-            // Check for subdomain matches, prioritizing more specific matches first
-            for (let subdomain of subdomainMatches) {
-                if (storedMessages[subdomain]) {
-                    if (!exactMatchMessage) {
-                        exactMatchMessage = storedMessages[subdomain]; // Take the first match found
-                    }
-                }
-            }
-
-            // Step 4: If no exact match, check for keyword matches in the URL
             if (!exactMatchMessage) {
-                for (let keyword in storedMessages) {
-                    if (url.includes(keyword.toLowerCase())) {
-                        exactMatchMessage = storedMessages[keyword];
-                        break;
-                    }
-                }
+                exactMatchMessage = getSubdomainMessage(domain, storedMessages);
             }
         }
 
@@ -139,15 +132,15 @@ function getMessage(type, callback) {
         } else {
             callback(null);
         }
-    });
+    }); // this function will get the first result that is given and checked.
 }
 function verifyMessage() {
-    getMessage('untrustedWebsites', (untrustedMessage) => {
+    getMessage('untrustedWebsites', (untrustedMessage) => { //if its untrsuted it will follow this logic
         if (untrustedMessage) {
             createPopup(untrustedMessage);
             timer();
         } else {
-            getMessage('websiteMessages', (trustedMessage) => {
+            getMessage('websiteMessages', (trustedMessage) => { //if its trusted it will follow this logic
                 if (trustedMessage) {
                     createPopup(trustedMessage);
                     timer();
